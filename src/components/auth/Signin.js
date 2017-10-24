@@ -3,14 +3,19 @@ import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
 import TextInput from "./../controls/TextInput";
 import PasswordInput from "./../controls/PasswordInput";
+import { connect } from "react-redux";
+
+import * as actions from "../../actions";
 
 class Signin extends Component {
     static propTypes = {
-        handleSubmit: PropTypes.func
+        handleSubmit: PropTypes.func,
+        signinUser: PropTypes.func
     };
 
     handleFormSubmit({ email, password }) {
         console.log(email, password);
+        this.props.signinUser({ email, password});
     }
 
     render() {
@@ -41,6 +46,6 @@ class Signin extends Component {
     }
 }
 
-export default reduxForm({
+export default connect(null, actions)(reduxForm({
     form: "signin"
-})(Signin);
+})(Signin));
