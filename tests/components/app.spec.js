@@ -1,5 +1,5 @@
 import {shallow} from "enzyme";
-import App from "../../src/components/app";
+import App from "../../src/components/App";
 
 describe("App", () => {
     let component;

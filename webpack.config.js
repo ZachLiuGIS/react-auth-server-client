@@ -3,7 +3,7 @@ const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const PROD = process.env.NODE_ENV === 'production';
+const PROD = process.env.NODE_ENV === "production";
 const DEV = !PROD;
 const DevToolPlugin = PROD
     ? webpack.SourceMapDevToolPlugin
@@ -26,9 +26,9 @@ const config = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
+                    fallback: "style-loader",
                     use: [{
-                        loader: 'css-loader'
+                        loader: "css-loader"
                     }]
                 }),
             },
@@ -54,21 +54,23 @@ const config = {
     },
     plugins: [
         new ExtractTextPlugin({
-            filename: DEV ? 'styles.css' : 'styles.[contenthash:6].css',
+            filename: DEV ? "styles.css" : "styles.[contenthash:6].css",
             allChunks: true
         }),
         new HtmlWebpackPlugin({
-            template: 'src/index.html',
+            template: "src/index.html",
             inject: true,
-            filename: 'index.html'
+            filename: "index.html"
         }),
         new DevToolPlugin({
             filename: "[file].map"
         })
-    ]
+    ], devServer: {
+        historyApiFallback: true,
+    }
 };
 
-!PROD && (config.devtool = 'source-map');
+!PROD && (config.devtool = "source-map");
 
 PROD && config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
@@ -81,8 +83,8 @@ PROD && config.plugins.push(
 
 PROD && config.plugins.push(
     new webpack.DefinePlugin({
-        'process.env': {
-            'NODE_ENV': JSON.stringify('production')
+        "process.env": {
+            "NODE_ENV": JSON.stringify("production")
         }
     })
 );
