@@ -1,32 +1,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { reduxForm, Field, propTypes } from "redux-form";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { reduxForm, Field, propTypes } from "redux-form";
 import * as actions from "../../actions";
 import { required } from "./validation";
 
-class Signin extends Component {
+class Signup extends Component {
 
     static propTypes = {
         ...propTypes,
-        signinUser: PropTypes.func,
+        signupUser: PropTypes.func,
         errorMessage: PropTypes.string
     };
 
-    handleFormSubmit({ email, password }) {
-        this.props.signinUser({ email, password});
-    }
-
-    renderAlert() {
-        if (this.props.errorMessage) {
-            return (
-                <div className="alert alert-danger">
-                    <string>Oops!</string> {this.props.errorMessage}
-                </div>
-            )
-        }
+    handleFormSubmit(values) {
+        // Call action creator to sign up the user.
+        const { email, password } = values;
+        this.props.signupUser(email, password);
     }
 
     renderField = ({ input, label, type, meta: { touched, error } }) => (
@@ -39,18 +29,25 @@ class Signin extends Component {
         </div>
     );
 
+    renderAlert() {
+        if (this.props.errorMessage) {
+            return (
+                <div className="alert alert-danger">
+                    <string>Oops!</string> {this.props.errorMessage}
+                </div>
+            )
+        }
+    }
+
     render() {
-        const {handleSubmit} = this.props;
+        const { handleSubmit } = this.props;
+
         return (
             <div className="row justify-content-center">
-
                 <form
                     className="col col-sm-4 card mt-5 p-2"
                     onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}
                 >
-                    <h4 className="text-md-center">Please Sign In</h4>
-                    <hr/>
-
                     <fieldset className="form-group">
                         <Field name="email" label="Email" component={this.renderField}
                                type="text" validate={[required]}/>
@@ -59,24 +56,39 @@ class Signin extends Component {
 
                     <fieldset className="form-group">
                         <Field name="password" label="Password" component={this.renderField}
-                               type="text" validate={[required]}/>
+                               type="password" validate={[required]}/>
+                    </fieldset>
+
+                    <fieldset className="form-group">
+                        <Field name="passwordConfirm" label="Confirm Password" component={this.renderField}
+                               type="password" validate={[required]}/>
                     </fieldset>
 
                     <fieldset className="form-group">
                         {this.renderAlert()}
-                    <button action="submit" className="btn btn-primary">Sign In</button>
+                        <button action="submit" className="btn btn-primary">Sign Up</button>
                     </fieldset>
-                    <p>Not registered? <Link to="/signup">Signup Here!</Link></p>
                 </form>
             </div>
-        )
+        );
     }
 }
+
+// Sync field level validation for password match
+const validateForm = values => {
+    const errors = {};
+    const { password, passwordConfirm } = values;
+    if (password !== passwordConfirm) {
+        errors.passwordConfirm = "Password does not match."
+    }
+    return errors;
+};
 
 function mapStateToProps(state) {
     return { errorMessage: state.auth.error };
 }
 
 export default connect(mapStateToProps, actions)(reduxForm({
-    form: "signin"
-})(Signin));
+    form: "signup",
+    validate: validateForm
+})(Signup));
