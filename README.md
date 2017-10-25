@@ -1,31 +1,20 @@
-# ReduxSimpleStarter
+# React Authentication Demo Server/Client
 
-There are two methods for getting started with this repo.
+This is a updated course project on authentication by Stephen Grider on udemy (Advanced React and Redux).
 
-### How to use it
+The course is excellent and well structured, the only thing is some packages are a little outdated, so I tried
+the upgrade and a few small changes.
 
-#### with git
+### The project depends on mongo db for store user data.
 
-```
-> git clone https://github.com/ZachLiuGIS/redux-project-starter.git
-> cd redux-project-starter
-> npm install
-> npm start
-```
+### What is different:
 
-#### without git
+Some packages have gone through major API changes.
 
-Download the repository .zip file, extract it, change to the project repository, and
+- React v16
+- Redux v5
+- bootstrap v4 for styling
+- react router v4 (react-router-dom, dynamic routes)
+- redux form v7 (Field replaced fields, used function for rendering)
 
-```
-> npm install
-> npm start
-```
 
-### What is included:
-
-- eslint
-- webpack
-- tests (mocha + enzyme + chai + sinon)
-- react + redux
-- bootstrap v4
